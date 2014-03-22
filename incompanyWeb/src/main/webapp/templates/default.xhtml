@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	
+	<h:head>
+		<title>Conexxões Educação - Incompany Web</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<h:outputStylesheet name="css/default.css" />
+	</h:head>
+
+	<h:body>
+		
+		<p:layout id="page" fullPage="true">
+		
+			<p:layoutUnit id="header" position="north" size="90" resizable="false" collapsible="false">
+				<ui:include src="/templates/header.xhtml" />
+			</p:layoutUnit>
+		
+			<p:layoutUnit id="content" position="center" resizable="false" collapsible="false">
+				<ui:insert name="content"/>
+			</p:layoutUnit>
+		
+			<p:layoutUnit id="footer" styleClass="footer" position="south" size="35" resizable="false" collapsible="false">
+				<ui:include src="/templates/footer.xhtml" />
+			</p:layoutUnit>
+	
+		</p:layout>
+		
+		<p:ajaxStatus style="width:64px;height:64px;position:fixed;right:65px;bottom:65px">  
+		    <f:facet name="start">  
+		        <p:graphicImage value="/resources/gfx/loading.gif" />  
+		    </f:facet>  
+		  
+		    <f:facet name="complete">  
+		        <h:outputText value="" />  
+		    </f:facet>  
+		</p:ajaxStatus> 
+	</h:body>
+</html>

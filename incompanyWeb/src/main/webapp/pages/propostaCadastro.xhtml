@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="/templates/default.xhtml">
+	
+		<ui:define name="content">
+		
+			<h1>Cadastro de Proposta Incompany</h1>
+			<hr />
+	
+			<h:form id="formProposta">
+			
+				<p:growl id="msg" showDetail="true" life="3000" />
+			
+				<h:panelGrid cellpadding="5" cellspacing="5" width="100%">
+				
+					<p:fieldset legend="Dados da Proposta">
+						<h:panelGrid columns="4" width="100%">
+						
+							<p:outputLabel value="Empresa:" for="empresa"/>
+							<p:outputLabel value="Responsável:" for="responsavel"/>
+							<p:outputLabel value="Email de Contato:" for="email"/>
+							<p:outputLabel value="Data da Solicitação:" for="dataSolicitacao"/>
+							
+							<h:panelGroup>
+								<p:inputText id="empresa" value="#{propostaCadastroController.propostaIncompany.empresa.nomeRazaoSocial}" size="60" required="true"/>
+								<p:commandButton icon="ui-icon-search" oncomplete="PF('buscaEmpresa').show()" immediate="true"/>
+							</h:panelGroup>
+							<h:panelGroup>
+								<p:inputText id="responsavel" value="#{propostaCadastroController.propostaIncompany.responsavel.nome}" size="60" />
+								<p:commandButton icon="ui-icon-search" oncomplete="PF('buscaResponsavel').show()" immediate="true"/>
+							</h:panelGroup>
+							<p:inputText id="email" value="#{propostaCadastroController.propostaIncompany.emailContato}"/>
+							<p:calendar id="dataSolicitacao" value="#{propostaCadastroController.propostaIncompany.dataSolicitacao}" required="true" pattern="dd/MM/yyyy"/>
+							
+							<p:outputLabel value="Palestrante:" for="palestrante"/>
+							<p:outputLabel value="Área Tema:" for="areaTema"/>
+							<p:outputLabel value="Fonte da Solicitação:" for="fonteSolicitacao"/>
+							<p:outputLabel value="Status:" for="status"/>
+	
+							<h:panelGroup>
+								<p:inputText id="palestrante" value="#{propostaCadastroController.propostaIncompany.palestrante.nome}" size="60" />
+								<p:commandButton icon="ui-icon-search" oncomplete="PF('buscaPalestrante').show()" immediate="true"/>
+							</h:panelGroup>
+							<h:panelGroup>
+								<p:inputText id="areaTema" value="#{propostaCadastroController.propostaIncompany.areaTema.nome}" size="60" />
+								<p:commandButton icon="ui-icon-search" oncomplete="PF('buscaAreaTema').show()" immediate="true"/>
+							</h:panelGroup>
+							<p:inputText id="fonteSolicitacao" value="#{propostaCadastroController.propostaIncompany.fonteSolicitacao}"/>
+							<p:selectOneMenu id="status" value="#{propostaCadastroController.propostaIncompany.status}" converter="appEntity">
+								<f:selectItem itemLabel="Selecione" itemValue="" />  
+		            			<f:selectItems value="#{propostaCadastroController.listaStatus()}" var="status" itemLabel="#{status.nome}" itemValue="#{status}" />  
+							</p:selectOneMenu>
+	
+							<p:outputLabel value="Prazo de Retorno:" for="prazoRetorno"/>
+							<p:outputLabel value="Descrição:" for="descricao"/>	
+							<p:outputLabel value="Telefone contato:" for="telefone"/>
+							<p:outputLabel value="Data Envio Proposta:" for="dataEnvioProposta"/>
+								
+							<p:calendar id="prazoRetorno" value="#{propostaCadastroController.propostaIncompany.dataPrazoRetorno}"/>
+							<p:inputText id="descricao" value="#{propostaCadastroController.propostaIncompany.descricao}"/>
+							<p:inputText id="telefone" value="#{propostaCadastroController.propostaIncompany.telefoneContato}"/>
+							<p:calendar id="dataEnvioProposta" value="#{propostaCadastroController.propostaIncompany.dataEnvioProposta}" pattern="dd/MM/yyyy"/>
+							
+						</h:panelGrid>
+						
+						<h:panelGrid>
+							<p:outputLabel value="Histórico:" for="historico"/>		
+							<p:inputTextarea id="historico" value="#{propostaCadastroController.propostaIncompany.historico}" cols="80"/>
+						</h:panelGrid>
+						
+					</p:fieldset>
+					
+					<h:panelGroup>
+						<p:commandButton value="Salvar" actionListener="#{propostaCadastroController.save}" update="formProposta"/>
+						<p:commandButton value="Cancelar" action="propostaPesquisa"/>
+					</h:panelGroup>
+				</h:panelGrid>
+				
+			</h:form>
+			
+			
+			
+			<p:dialog id="buscaResponsavel" header="Pesquisa de Responsáveis" widgetVar="buscaResponsavel" resizable="false" showEffect="fade"
+				hideEffect="explode" modal="true" appendTo="@(body)">
+				
+				<h:form id="formResponsavel">
+					<h:panelGrid cellpadding="5" cellspacing="5" width="100%">
+				
+						<h:panelGrid columns="3" width="100%">
+						
+							<p:outputLabel value="Nome:" for="nomeResponsavel"/>
+							
+							<p:inputText id="nomeResponsavel" value="#{clientePesquisaController.cliente.nome}" />
+							
+						</h:panelGrid>
+						
+						<h:panelGroup>
+							<p:commandButton action="#{clientePesquisaController.find()}" value="Pesquisar" update="dataListResponsavel" process="formResponsavel"/>
+						</h:panelGroup>
+						
+						<p:dataTable id="dataListResponsavel" value="#{clientePesquisaController.lista}" var="cliente" 
+							paginator="true" paginatorAlwaysVisible="false" rows="10" rowKey="#{cliente.codigo}"  
+                 			selection="#{propostaCadastroController.propostaIncompany.responsavel}" selectionMode="single">
+							
+							<p:column>
+								<f:facet name="header">  
+						            <h:outputText value="Nome" />  
+						        </f:facet> 
+								<h:outputText value="#{cliente.nome}" />
+							</p:column>
+							
+							<f:facet name="footer">  
+					            <p:commandButton value="Selecionar" icon="ui-icon-check" process=":formProposta:responsavel" 
+					                    update=":formProposta" oncomplete="PF('buscaResponsavel').hide()"/>  
+					        </f:facet>
+						</p:dataTable>
+					
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+			
+			<p:dialog id="buscaEmpresa" header="Pesquisa de Empresas" widgetVar="buscaEmpresa" resizable="false" showEffect="fade"
+				hideEffect="explode" modal="true" appendTo="@(body)">
+				
+				<h:form id="formEmpresa">
+					<h:panelGrid cellpadding="5" cellspacing="5" width="100%">
+				
+						<h:panelGrid columns="3" width="100%">
+						
+							<p:outputLabel value="Nome:" for="nomeEmpresa"/>
+							<p:outputLabel value="CNPJ:" for="cnpj"/>
+							<p:outputLabel value="UF:" for="uf"/>
+							
+							<p:inputText id="nomeEmpresa" value="#{empresaPesquisaController.empresa.nomeRazaoSocial}" />
+							<p:inputText id="cnpj" value="#{empresaPesquisaController.empresa.cnpj}"/>
+							<p:selectOneMenu id="uf" value="#{empresaPesquisaController.empresa.cidade.estado.codigo}">
+								<f:selectItem itemLabel="Selecione" itemValue="" />  
+		            			<f:selectItems value="#{empresaPesquisaController.listaEstados()}" var="estado" itemLabel="#{estado.sigla}" itemValue="#{estado.codigo}" />  
+							</p:selectOneMenu>
+							
+						</h:panelGrid>
+						
+						<h:panelGroup>
+							<p:commandButton action="#{empresaPesquisaController.find()}" value="Pesquisar" update="dataListEmpresa"/>
+						</h:panelGroup>
+						
+						<p:dataTable id="dataListEmpresa" value="#{empresaPesquisaController.lista}" var="empresa" 
+							paginator="true" paginatorAlwaysVisible="false" rows="10" rowKey="#{empresa.codigo}"  
+                 			selection="#{propostaCadastroController.propostaIncompany.empresa}" selectionMode="single">
+							
+							<p:column>
+								<f:facet name="header">  
+						            <h:outputText value="CNPJ" />  
+						        </f:facet> 
+								<h:outputText value="#{empresa.cnpj}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">  
+						            <h:outputText value="Nome" />  
+						        </f:facet> 
+								<h:outputText value="#{empresa.nomeRazaoSocial}" />
+							</p:column>
+							
+							<f:facet name="footer">  
+					            <p:commandButton value="Selecionar" icon="ui-icon-check"  process=":formEmpresa"
+					                    update=":formProposta:empresa" oncomplete="PF('buscaEmpresa').hide()"/>  
+					        </f:facet>
+						</p:dataTable>
+					
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+			
+			<p:dialog id="buscaAreaTema" header="Pesquisa de Temas" widgetVar="buscaAreaTema" resizable="false" showEffect="fade"
+				hideEffect="explode" modal="true" appendTo="@(body)">
+				
+				<h:form id="formAreaTema">
+					<h:panelGrid cellpadding="5" cellspacing="5" width="100%">
+				
+						<h:panelGrid columns="3" width="100%">
+						
+							<p:outputLabel value="Nome:" for="nomeAreaTema"/>
+							
+							<p:inputText id="nomeAreaTema" value="#{areaTemaPesquisaController.areaTema.nome}" />
+							
+						</h:panelGrid>
+						
+						<h:panelGroup>
+							<p:commandButton action="#{areaTemaPesquisaController.find()}" value="Pesquisar" update="dataListAreaTema"/>
+						</h:panelGroup>
+						
+						<p:dataTable id="dataListAreaTema" value="#{areaTemaPesquisaController.lista}" var="areaTema" 
+							paginator="true" paginatorAlwaysVisible="false" rows="10" rowKey="#{areaTema.codigo}"  
+                 			selection="#{propostaCadastroController.propostaIncompany.areaTema}" selectionMode="single">
+							
+							<p:column>
+								<f:facet name="header">  
+						            <h:outputText value="Nome" />  
+						        </f:facet> 
+								<h:outputText value="#{areaTema.nome}" />
+							</p:column>
+							
+							<f:facet name="footer">  
+					            <p:commandButton value="Selecionar" icon="ui-icon-check" process=":formAreaTema"
+					                    update=":formProposta:areaTema" oncomplete="PF('buscaAreaTema').hide()"/>  
+					        </f:facet>
+						</p:dataTable>
+					
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+			
+			<p:dialog id="buscaPalestrante" header="Pesquisa de Palestrantes" widgetVar="buscaPalestrante" resizable="false" showEffect="fade"
+				hideEffect="explode" modal="true" appendTo="@(body)">
+				
+				<h:form id="formPalestrante">
+					<h:panelGrid cellpadding="5" cellspacing="5" width="100%">
+				
+						<h:panelGrid columns="3" width="100%">
+						
+							<p:outputLabel value="Nome:" for="nomePalestrante"/>
+							
+							<p:inputText id="nomePalestrante" value="#{palestrantePesquisaController.palestrante.nome}" />
+							
+						</h:panelGrid>
+						
+						<h:panelGroup>
+							<p:commandButton action="#{palestrantePesquisaController.find()}" value="Pesquisar" update="dataListPalestrante"/>
+						</h:panelGroup>
+						
+						<p:dataTable id="dataListPalestrante" value="#{palestrantePesquisaController.lista}" var="palestrante" 
+							paginator="true" paginatorAlwaysVisible="false" rows="10" rowKey="#{palestrante.codigo}"  
+                 			selection="#{propostaCadastroController.propostaIncompany.palestrante}" selectionMode="single">
+							
+							<p:column>
+								<f:facet name="header">  
+						            <h:outputText value="Nome" />  
+						        </f:facet> 
+								<h:outputText value="#{palestrante.nome}" />
+							</p:column>
+							
+							<f:facet name="footer">  
+					            <p:commandButton value="Selecionar" icon="ui-icon-check" process=":formPalestrante"
+					                    update=":formProposta:palestrante" oncomplete="PF('buscaPalestrante').hide()"/>  
+					        </f:facet>
+						</p:dataTable>
+					
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+			
+		</ui:define>
+	
+	</ui:composition>
+</html>

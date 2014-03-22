@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form>
+		<p:menubar>
+			<p:submenu label="Propostas">
+				<p:menuitem value="Pesquisa de Propostas" url="/pages/propostaPesquisa.jsf" />
+			</p:submenu>
+			
+			<f:facet name="options">  
+				<h:form id="logoutForm"> 
+					<p:commandButton action="#{usuarioController.logout}" value="Sair" icon="ui-icon-extlink" update="logoutForm" />
+				</h:form>
+	        </f:facet>
+		</p:menubar>
+	</h:form>
+</ui:composition>

@@ -1,0 +1,2 @@
+eclipse.preferences.version=1
+org.jboss.ide.eclipse.as.core.singledeployable.deployableList=src/main/resources/META-INF/incompanyWeb-ds.xml\nsrc/test/resources/selecaoWeb-ds.xml\nsrc/META-INF/Event-ds.xml\nsrc/main/resources/META-INF/selecaoWeb-ds.xml\nsrc/main/resources/META-INF/selecaoWeb-ds.xml\n
