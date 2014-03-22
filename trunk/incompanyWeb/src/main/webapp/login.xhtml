@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:tiles="http://www.thymeleaf.org">
+
+	<h:head>
+        <title>Conexxões Educação - Incompany Web</title>
+        <h:outputStylesheet name="css/default.css" />
+    </h:head>
+    <h:body>
+        <h:form id="loginForm">          
+          
+            <p:growl id="msg" showDetail="true" life="3000" />
+           	<h:panelGrid>
+				<p:fieldset legend="Login">
+					<h:panelGrid id="loginPanel" style="width:300px;">
+				
+						<h:outputText value="Usuário" />
+						<p:inputText id="usuario" value="#{usuarioController.usuario.login}" required="true"/>
+						<p:message for="usuario" />
+						
+						<h:outputText value="Senha" />
+						<p:password id="senha" value="#{usuarioController.usuario.senha}" feedback="false" required="true" />
+						<p:message for="senha"/>
+						
+						<p:commandButton action="#{usuarioController.login}" value="Entrar" update="loginForm" />
+			
+					</h:panelGrid>
+				</p:fieldset>
+           	</h:panelGrid>
+
+        </h:form>
+ 
+    </h:body> 
+</html>

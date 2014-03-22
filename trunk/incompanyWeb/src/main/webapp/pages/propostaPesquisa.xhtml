@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="/templates/default.xhtml">
+	
+		<ui:define name="content">
+		
+			<h1>Pesquisa de Propostas Incompany</h1>
+			<hr />
+	
+			<h:form>
+			
+				<h:panelGrid cellpadding="5" cellspacing="5" width="100%">
+				
+					<p:fieldset legend="Filtros para Pesquisa">
+						<h:panelGrid columns="7" width="100%">
+					
+							<p:outputLabel value="Empresa:" for="empresa"/>
+							<p:outputLabel value="Responsável:" for="responsavel"/>
+							<p:outputLabel value="Email de Contato:" for="email"/>
+							<p:outputLabel value="Data da Solicitação:" for="dataSolicitacao"/>
+							<p:outputLabel value="Fonte da Solicitação:" for="fonteSolicitacao"/>
+							<p:outputLabel value="Área Tema:" for="areaTema"/>
+							<p:outputLabel value="Palestrante:" for="palestrante"/>
+							
+							<p:inputText id="empresa" value="#{propostaPesquisaController.propostaIncompany.empresa.nomeRazaoSocial}"/>
+							<p:inputText id="responsavel" value="#{propostaPesquisaController.propostaIncompany.responsavel.nome}"/>
+							<p:inputText id="email" value="#{propostaPesquisaController.propostaIncompany.emailContato}"/>
+							<p:calendar id="dataSolicitacao" value="#{propostaPesquisaController.propostaIncompany.dataSolicitacao}"/>
+							<p:inputText id="fonteSolicitacao" value="#{propostaPesquisaController.propostaIncompany.fonteSolicitacao}"/>
+							<p:inputText id="areaTema" value="#{propostaPesquisaController.propostaIncompany.areaTema.nome}"/>
+							<p:inputText id="palestrante" value="#{propostaPesquisaController.propostaIncompany.palestrante.nome}"/>
+							
+							<p:outputLabel value="Status:" for="status"/>
+							<p:outputLabel value="Prazo de Retorno:" for="prazoRetorno"/>
+							<p:outputLabel value="UF:" for="uf"/>
+							<p:outputLabel value="Descrição:" for="descricao"/>	
+							<p:outputLabel value="Telefone contato:" for="telefone"/>
+							<p:outputLabel value="Histórico:" for="historico"/>			
+							<p:outputLabel value="Data Envio Proposta:" for="dataEnvioProposta"/>
+							
+							<p:selectOneMenu id="status" value="#{propostaPesquisaController.propostaIncompany.status.codigo}">
+								<f:selectItem itemLabel="Selecione" itemValue="" />  
+		            			<f:selectItems value="#{propostaPesquisaController.listaStatus()}" var="status" itemLabel="#{status.nome}" itemValue="#{status.codigo}" />  
+							</p:selectOneMenu>
+							<p:calendar id="prazoRetorno" value="#{propostaPesquisaController.propostaIncompany.dataPrazoRetorno}"/>
+							<p:selectOneMenu id="uf" value="#{propostaPesquisaController.propostaIncompany.empresa.cidade.estado.codigo}">
+								<f:selectItem itemLabel="Selecione" itemValue="" />  
+		            			<f:selectItems value="#{propostaPesquisaController.listaEstados()}" var="estado" itemLabel="#{estado.sigla}" itemValue="#{estado.codigo}" />  
+							</p:selectOneMenu>
+							<p:inputText id="descricao" value="#{propostaPesquisaController.propostaIncompany.descricao}"/>
+							<p:inputText id="telefone" value="#{propostaPesquisaController.propostaIncompany.telefoneContato}"/>
+							<p:inputText id="historico" value="#{propostaPesquisaController.propostaIncompany.historico}"/>
+							<p:calendar id="dataEnvioProposta" value="#{propostaPesquisaController.propostaIncompany.dataEnvioProposta}"/>
+					
+						
+						</h:panelGrid>
+					</p:fieldset>
+					
+					<h:panelGroup>
+						<p:commandButton action="#{propostaPesquisaController.find()}" value="Pesquisar" update="dataListTable"/>
+						<p:commandButton value="Novo" action="propostaCadastro"/>
+					</h:panelGroup>
+					
+					<p:dataTable id="dataListTable" value="#{propostaPesquisaController.lista}" var="propostaIncompany" 
+						paginator="true" paginatorAlwaysVisible="false" rows="20">
+						
+						<p:column>
+							<f:facet name="header">  
+					            <h:outputText value="Data da Solicitação" />  
+					        </f:facet> 
+							<h:outputText value="#{propostaIncompany.dataSolicitacao}" >
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">  
+					            <h:outputText value="Fonte" />  
+					        </f:facet> 
+							<h:outputText value="#{propostaIncompany.fonteSolicitacao}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">  
+					            <h:outputText value="Empresa" />  
+					        </f:facet> 
+							<h:outputText value="#{propostaIncompany.empresa.nomeRazaoSocial}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">  
+					            <h:outputText value="Responsável" />  
+					        </f:facet>
+							<h:outputText value="#{propostaIncompany.responsavel.nome}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">  
+					            <h:outputText value="Responsável de Contato" />  
+					        </f:facet>
+							<h:outputText value="#{propostaIncompany.responsavelContato}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">  
+					            <h:outputText value="Email de Contato" />  
+					        </f:facet>
+							<h:outputText value="#{propostaIncompany.emailContato}" />
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">  
+					            <h:outputText value="Valor" />  
+					        </f:facet>
+							<h:outputText value="#{propostaIncompany.valor}">
+								<f:convertNumber currencySymbol="R$"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">  
+					            <h:outputText value="Tema" />  
+					        </f:facet>
+							<h:outputText value="#{propostaIncompany.areaTema.nome}"/>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">  
+					            <h:outputText value="Palestrante" />  
+					        </f:facet>
+							<h:outputText value="#{propostaIncompany.palestrante.nome}"/>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">  
+					            <h:outputText value="Envio da Proposta" />  
+					        </f:facet>
+							<h:outputText value="#{propostaIncompany.dataEnvioProposta}" >
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">  
+					            <h:outputText value="Histórico" />  
+					        </f:facet>
+							<h:outputText value="#{propostaIncompany.historico}"/>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">  
+					            <h:outputText value="Prazo Retorno" />  
+					        </f:facet>
+							<h:outputText value="#{propostaIncompany.dataPrazoRetorno}" >
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+						</p:column>
+						
+						<p:column>
+							<f:facet name="header">  
+					            <h:outputText value="Status" />  
+					        </f:facet>
+							<h:outputText value="#{propostaIncompany.status.nome}"/>
+						</p:column>
+						
+						<f:facet name="footer">
+							
+					        <h:commandLink>  
+					            <p:graphicImage value="/resources/gfx/excel.png" />  
+					            <p:dataExporter type="xls" target="dataListTable" fileName="Propostas" postProcessor="#{dataExporterController.postProcessXLS}" />  
+					        </h:commandLink>  
+					  
+					        <h:commandLink>  
+					            <p:graphicImage value="/resources/gfx/pdf.png" />  
+					            <p:dataExporter type="pdf" target="dataListTable" fileName="Propostas" preProcessor="#{dataExporterController.preProcessPDF}"/>  
+					        </h:commandLink>  
+					          
+					        <h:commandLink>  
+					            <p:graphicImage value="/resources/gfx/csv.png" />  
+					            <p:dataExporter type="csv" target="dataListTable" fileName="Propostas" />  
+					        </h:commandLink>  
+					          
+					        <h:commandLink>  
+					            <p:graphicImage value="/resources/gfx/xml.png" />  
+					            <p:dataExporter type="xml" target="dataListTable" fileName="Propostas" />  
+					        </h:commandLink>  
+						</f:facet>
+					</p:dataTable>
+				
+				</h:panelGrid>
+			
+				
+			</h:form>
+
+		</ui:define>
+	
+	</ui:composition>
+</html>
